@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lakheslo | Study smarter</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script>
+    window.MathJax = { tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }, svg: { fontCache: 'global' } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/">lakheslo<span>.</span></a><span>AI study workspace</span></header>
+  <main>
+    <section id="landing" class="hero">
+      <div><p class="eyebrow">LEARN WITH CLARITY</p><h1>Your PDF,<br><em>understood.</em></h1><p class="lede">Turn dense course material into clear summaries, practice quizzes, and helpful explanations.</p></div>
+      <form id="upload-form" class="upload-card">
+        <div id="drop-zone" class="drop-zone"><div class="upload-icon">↑</div><h2>Drop a PDF here</h2><p>or click to browse · up to 25 MB</p><input id="file-input" type="file" accept="application/pdf" hidden></div>
+        <button class="primary" type="submit">Start studying <span>→</span></button><p id="upload-status" class="status"></p>
+      </form>
+    </section>
+    <section id="workspace" class="workspace hidden">
+      <div class="document-bar"><div><p class="eyebrow">CURRENT DOCUMENT</p><h2 id="document-name"></h2><p id="document-meta"></p></div><button id="new-document" class="secondary">Upload another</button></div>
+      <nav class="tabs"><button class="tab active" data-tab="summary">Summary</button><button class="tab" data-tab="quiz">Quiz generator</button><button class="tab" data-tab="chat">Chat with PDF</button></nav>
+      <div id="summary" class="panel active"><div class="panel-heading"><div><p class="eyebrow">MAKE IT MEMORABLE</p><h2>Document summary</h2></div><div class="segmented"><button data-style="comprehensive" class="active">Comprehensive</button><button data-style="quick">Quick</button></div></div><div id="summary-result" class="result empty">Choose a summary style to begin.</div></div>
+      <div id="quiz" class="panel"><div class="panel-heading"><div><p class="eyebrow">PRACTICE</p><h2>Build a quiz</h2></div><div class="quiz-controls"><select id="difficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option></select><select id="question-count"><option>5</option><option>10</option><option>15</option></select><button id="generate-quiz" class="primary">Generate</button></div></div><div id="quiz-result" class="result empty">Select a difficulty and generate questions.</div></div>
+      <div id="chat" class="panel"><div class="panel-heading"><div><p class="eyebrow">ASK ANYTHING</p><h2>Chat with your PDF</h2></div></div><div id="chat-messages" class="chat-messages"><div class="message assistant">Ask me about the document, a formula, or a worked example.</div></div><form id="chat-form" class="chat-form"><input id="chat-input" maxlength="4000" placeholder="e.g. Explain the eigenvalue method step by step..." autocomplete="off"><button class="primary">Send</button></form></div>
+    </section>
+  </main>
+  <footer class="site-footer">© 2026 Elias Bcheraui</footer>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
