@@ -54,7 +54,7 @@ function formatAiText(text) {
 }
 function renderInline(text) {
   const formulas = [];
-  let source = String(text);
+  let source = normalizeMathDelimiters(String(text));
   const trimmed = source.trim();
   if (looksLikeBareFormula(trimmed)) {
     source = `\\(${trimmed}\\)`;
@@ -75,6 +75,18 @@ function renderInline(text) {
     .replace(/^\*+\s*/, '')
     .replace(/\s+\*+$/, '');
   return escapeHtml(cleaned).replace(/@@FORMULA_(\d+)@@/g, (_match, index) => formulas[index]);
+}
+function normalizeMathDelimiters(text) {
+  let normalized = text;
+  normalized = normalized.replace(/\\\(([\s\S]*?)\\\}(?=\s*$)/g, '\\($1\\)');
+  normalized = normalized.replace(/\\\[([\s\S]*?)\\\}(?=\s*$)/g, '\\[$1\\]');
+  normalized = normalized.replace(/\\\(([\s\S]*?)(?=\s*$)/g, (match, body) => (
+    match.includes('\\)') ? match : `\\(${body.replace(/\s+$/, '')}\\)`
+  ));
+  normalized = normalized.replace(/\\\[([\s\S]*?)(?=\s*$)/g, (match, body) => (
+    match.includes('\\]') ? match : `\\[${body.replace(/\s+$/, '')}\\]`
+  ));
+  return normalized;
 }
 function looksLikeBareFormula(text) {
   if (!text || text.includes('\\(') || text.includes('\\[')) return false;
