@@ -16,7 +16,9 @@ def generate_quiz(document: dict, difficulty: str, count: int, gemini: GeminiSer
     prompt = f"""Create exactly {count} {difficulty} multiple-choice questions from the PDF content below.
 Return JSON only with this shape:
 {{"questions":[{{"question":"...","options":["A","B","C","D"],"answer":0,"explanation":"...","pages":[1]}}]}}
-The answer is a zero-based option index. Use document facts only. Include LaTeX for math.
+The answer is a zero-based option index. Use document facts only.
+For every mathematical expression, use LaTeX enclosed in \\(...\\) for inline math or \\[...\\] for display math.
+Never return bare LaTeX commands, and never use dollar-sign math delimiters.
 Document:
 {chr(10).join(excerpts)}"""
     result = gemini.generate(prompt, response_json=True)

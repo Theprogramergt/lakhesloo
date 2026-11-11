@@ -54,7 +54,12 @@ function formatAiText(text) {
 }
 function renderInline(text) {
   const formulas = [];
-  const source = String(text).replace(
+  let source = String(text);
+  const trimmed = source.trim();
+  if (looksLikeBareFormula(trimmed)) {
+    source = `\\(${trimmed}\\)`;
+  }
+  source = source.replace(
     /(\$\$[\s\S]+?\$\$|\$[^$\n]+?\$|\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\])/g,
     (formula) => {
       if (formula.startsWith('$$') && formula.endsWith('$$')) {
@@ -70,6 +75,12 @@ function renderInline(text) {
     .replace(/^\*+\s*/, '')
     .replace(/\s+\*+$/, '');
   return escapeHtml(cleaned).replace(/@@FORMULA_(\d+)@@/g, (_match, index) => formulas[index]);
+}
+function looksLikeBareFormula(text) {
+  if (!text || text.includes('\\(') || text.includes('\\[')) return false;
+  const hasLatexCommand = /\\(?:forall|exists|in|notin|ge|le|neq|approx|frac|sqrt|lambda|alpha|beta|gamma|sum|int|operatorname|text|mathbf|hat|bar)\b/.test(text);
+  const hasLatexStructure = /[_^{}]|\\[a-zA-Z]+/.test(text);
+  return hasLatexCommand || (hasLatexStructure && !/[.!?]\s+[A-Z]/.test(text));
 }
 function stripMarkdown(text) {
   return String(text)

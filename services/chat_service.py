@@ -20,7 +20,9 @@ def answer_question(document: dict, question: str, gemini: GeminiService) -> dic
     history = document["chat_history"][-6:]
     prompt = f"""Answer the student's question using only the supplied PDF excerpts.
 If the answer is not present, say so clearly. Cite page numbers when possible.
-Give step-by-step mathematical reasoning and use \\(...\\) or \\[...\\] for LaTeX.
+Give step-by-step mathematical reasoning. Put every mathematical expression in
+LaTeX using \\(...\\) for inline math or \\[...\\] for display math. Never return
+bare LaTeX commands or dollar-sign math delimiters.
 Conversation history: {history}
 Question: {question}
 PDF excerpts:
