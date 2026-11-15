@@ -19,6 +19,8 @@ def generate_summary(document: dict, style: str, gemini: GeminiService) -> dict:
                 f"""You are summarizing part of a study PDF. Use LaTeX for mathematics.
 {detail}
 Preserve page references from the source. Do not invent content.
+Wrap every mathematical expression in \\(...\\) for inline math or \\[...\\] for display math.
+Never use dollar-sign delimiters and never return bare LaTeX commands.
 Source pages {chunk['pages']}:
 {chunk['text']}"""
             )
@@ -27,6 +29,8 @@ Source pages {chunk['pages']}:
     final = gemini.generate(
         f"""Create the final {style} study summary from ALL partial summaries below.
 Organize it with Markdown headings and bullet lists. Use LaTeX delimiters: \\(...\\) inline and \\[...\\] for display equations.
+Rewrite any dollar-sign math or bare LaTeX from the partial summaries into those delimiters.
+Never leave raw $, $$, or bare LaTeX commands in the final answer.
 Keep page references, reconcile overlap, and do not claim coverage beyond the supplied material.
 Partial summaries:
 {combined}"""

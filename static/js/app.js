@@ -78,6 +78,8 @@ function renderInline(text) {
 }
 function normalizeMathDelimiters(text) {
   let normalized = text;
+  normalized = normalized.replace(/\$\$([\s\S]*?)\$\$/g, '\\[$1\\]');
+  normalized = normalized.replace(/\$([^$\n]+?)\$/g, '\\($1\\)');
   normalized = normalized.replace(/\\\(([\s\S]*?)\\\}(?=\s*$)/g, '\\($1\\)');
   normalized = normalized.replace(/\\\[([\s\S]*?)\\\}(?=\s*$)/g, '\\[$1\\]');
   normalized = normalized.replace(/\\\(([\s\S]*?)(?=\s*$)/g, (match, body) => (
